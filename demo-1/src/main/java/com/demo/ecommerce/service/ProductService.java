@@ -12,5 +12,5 @@ public interface ProductService {
 	
 	Product save(Product theEmployee);
 	
-	void DeleteById(long theId);
+	void deleteById(long theId);
 }

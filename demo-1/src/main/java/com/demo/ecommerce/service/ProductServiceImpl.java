@@ -47,7 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional
 	@Override
-	public void DeleteById(long theId) {
+	public void deleteById(long theId) {
 		// TODO Auto-generated method stub
 		productRepository.deleteById(theId);
 	}
