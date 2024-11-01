@@ -14,10 +14,11 @@ export class ProductService {
   constructor(private httpClient: HttpClient) { }
 
   getProductList(): Observable<Product[]> {
-    return this.httpClient.get<GetResponse>(this.baseUrl).pipe(
-      map(response => response._embedded.products)
-    );
-  }
+    console.log('getProductList() called');
+    
+    return this.httpClient.get<Product[]>(this.baseUrl);
+}
+
 }
 
 interface GetResponse {

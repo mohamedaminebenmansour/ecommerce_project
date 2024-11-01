@@ -5,7 +5,7 @@ import com.demo.ecommerce.service.ProductCategoryService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api")
 public class ProductCategoryController {
