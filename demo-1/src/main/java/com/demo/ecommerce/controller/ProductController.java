@@ -2,6 +2,9 @@ package com.demo.ecommerce.controller;
 
 import com.demo.ecommerce.entity.Product;
 import com.demo.ecommerce.service.ProductService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -49,5 +52,13 @@ public class ProductController {
         }
         productService.deleteById(productId);
         return "Deleted Product ID - " + productId;
+    }
+    
+
+    @GetMapping("/category/{id}")
+    public Page<Product> getProductsByCategoryId(
+            @PathVariable("id") Long id,
+            Pageable pageable) {
+        return productService.findByCategoryId(id, pageable);
     }
 }
