@@ -30,6 +30,33 @@ export class ProductService {
     return this.httpClient.get<ProductCategory[]>(this.categoryUrl);
   }
 
+  searchProducts(theKeyword: string): Observable<Product[]> {
+    // Build the URL based on the keyword
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining/${theKeyword}`;
+    
+    // Log the constructed URL to verify it is correct
+    console.log('Constructed Search URL:', searchUrl);
+  
+    // Call the method to retrieve products
+    return this.getProducts(searchUrl);
+  }
+  
+  private getProducts(searchUrl: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
+      map(response => {
+        // Log the full response to see what data is being returned
+        console.log('HTTP Response:', response);
+  
+        // Extract and log the content (array of products) from the response
+        console.log('Extracted Products:', response.content);
+  
+        // Return the products array
+        return response.content;
+      })
+    );
+  }
+  
+
   /**
    * console.log('getProductList() called');
     
