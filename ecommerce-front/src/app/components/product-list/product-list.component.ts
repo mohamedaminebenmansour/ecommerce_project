@@ -109,20 +109,27 @@ export class ProductListComponent implements OnInit {
 
   processResult() {
     return (data: any) => {
-      console.log("processResult called with data:", data);
-      
-      // Adjusting to match the structure of GetResponseProducts
-      this.products = data.content;
-      this.thePageNumber = data.number + 1;
-      this.thePageSize = data.size;
-      this.theTotalElements = data.totalElements;
+        console.log("processResult called with data:", data);
+        
+        // Adjusting to match the structure of GetResponseProducts
+        this.products = data.content;
+        this.thePageNumber = data.number + 1;
+        this.thePageSize = data.size;
+        this.theTotalElements = data.totalElements;
 
-      console.log("Processed pagination info:", {
-        pageNumber: this.thePageNumber,
-        pageSize: this.thePageSize,
-        totalElements: this.theTotalElements
-      });
-    };
-}
+        console.log("Processed pagination info:", {
+          pageNumber: this.thePageNumber,
+          pageSize: this.thePageSize,
+          totalElements: this.theTotalElements
+        });
+      };
+  }
+  addToCart(theProduct: Product) {
+    
+    console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
+
+    // TODO ... do the real work
+    
+  }
 
 }
