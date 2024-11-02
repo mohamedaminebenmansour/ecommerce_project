@@ -104,12 +104,13 @@ export class ProductListComponent implements OnInit {
       .subscribe(this.processResult());
   }
 
-  updatePageSize(pageSize: string) {
+  updatePageSize(event: Event) {
+    const pageSize = (event.target as HTMLSelectElement).value;
     console.log(`Updating page size to ${pageSize}`);
     this.thePageSize = +pageSize;
     this.thePageNumber = 1;
     this.listProducts();
-  }
+}
 
   processResult() {
     return (data: any) => {
