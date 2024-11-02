@@ -10,6 +10,7 @@ import com.demo.ecommerce.entity.Product;
 public interface ProductService {
 
 	List<Product> findAll();
+	Page<Product> findAll(Pageable pageable);
 	
 	Product findById(long theId);
 	

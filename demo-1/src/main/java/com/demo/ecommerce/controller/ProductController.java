@@ -21,9 +21,15 @@ public class ProductController {
     }
 
     @GetMapping("/products")
+    public Page<Product> getProducts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        return productService.findAll(PageRequest.of(page, size));
+    }
+    /*
     public List<Product> findAll() {
         return productService.findAll();
-    }
+    }*/
 
     @GetMapping("/products/{productId}")
     public Product getProduct(@PathVariable Long productId) {
