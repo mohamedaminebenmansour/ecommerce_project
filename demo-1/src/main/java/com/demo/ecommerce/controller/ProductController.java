@@ -62,7 +62,7 @@ public class ProductController {
     }
     
 
-    @GetMapping("/products/search/findByCategoryId/{id}")
+    @GetMapping("/products/search/findByCategoryId2/{id}")
     public Page<Product> getProductsByCategoryId(
             @PathVariable("id") Long id,
             Pageable pageable) {
@@ -78,4 +78,15 @@ public class ProductController {
         Pageable pageable = PageRequest.of(page, size);
         return productService.findByNameContaining(name, pageable);
     }
+    
+    @GetMapping("/products/search/findByCategoryId/{id}")
+    public Page<Product> getProductsByCategoryId(
+            @PathVariable("id") Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.findByCategoryId(id, pageable);
+    }
+
 }
