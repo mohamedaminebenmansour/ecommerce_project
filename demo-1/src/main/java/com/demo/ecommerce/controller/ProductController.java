@@ -55,7 +55,7 @@ public class ProductController {
     }
     
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/products/search/findByCategoryId/{id}")
     public Page<Product> getProductsByCategoryId(
             @PathVariable("id") Long id,
             Pageable pageable) {
