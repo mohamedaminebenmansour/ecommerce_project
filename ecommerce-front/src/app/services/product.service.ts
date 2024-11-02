@@ -14,16 +14,20 @@ export class ProductService {
   constructor(private httpClient: HttpClient) { }
 
   getProductList(theCategoryId: number): Observable<Product[]> {
-    // ! need to build url based on category id
-    console.log('getProductList() called');
-    
-    return this.httpClient.get<Product[]>(this.baseUrl);
-}
-
-}
-
-interface GetResponse {
-  _embedded: {
-    products: Product[];
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId/${theCategoryId}`;
+  
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(
+      map(response => response.content)  // Extract the products array from `content`
+    );
   }
+  
+
+
+}
+interface GetResponseProducts {
+  content: Product[];       // List of products
+  totalElements: number;    // Total number of elements
+  totalPages: number;       // Total number of pages
+  size: number;             // Page size
+  number: number;           // Current page number
 }

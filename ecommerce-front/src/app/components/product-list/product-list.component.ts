@@ -27,18 +27,26 @@ export class ProductListComponent implements OnInit {
   }
 
   listProducts() {
-    //check if 'id' parameter is available
-    const hasCategoryId: boolean =this.route.snapshot.paramMap.has('id')
-    if(hasCategoryId){
-      //get the "id" param string, convert to number
-      this.currentCategoryId = +(this.route.snapshot.paramMap.get('id')||1);
+    // Check if 'id' parameter is available
+    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
+    
+    if (hasCategoryId) {
+      // Get the "id" param string, convert to number
+      this.currentCategoryId = +(this.route.snapshot.paramMap.get('id') || 1);
     }
+    
     this.productService.getProductList(this.currentCategoryId).subscribe(
       data => {
-        this.products = data;
-        console.log(this.products);
+        // Access the 'content' field which contains the actual array of products
+        this.products = data ;
+        console.log("data=", data);
+        console.log("products=", this.products);
+      },
+      error => {
+        console.error("Error fetching product list:", error);
       }
-    )
+    );
   }
+  
 
 }
