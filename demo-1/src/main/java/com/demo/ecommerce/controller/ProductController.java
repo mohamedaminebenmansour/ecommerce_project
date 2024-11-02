@@ -4,6 +4,7 @@ import com.demo.ecommerce.entity.Product;
 import com.demo.ecommerce.service.ProductService;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,5 +61,15 @@ public class ProductController {
             @PathVariable("id") Long id,
             Pageable pageable) {
         return productService.findByCategoryId(id, pageable);
+    }
+    
+    @GetMapping("/products/search/findByNameContaining/{name}")
+    public Page<Product> searchProductsByName(
+            @PathVariable("name") String name,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        
+        Pageable pageable = PageRequest.of(page, size);
+        return productService.findByNameContaining(name, pageable);
     }
 }

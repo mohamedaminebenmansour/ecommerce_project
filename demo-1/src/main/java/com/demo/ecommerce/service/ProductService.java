@@ -18,4 +18,6 @@ public interface ProductService {
 	void deleteById(long theId);
 
 	Page<Product> findByCategoryId(Long id, Pageable pageable);
+	
+	Page<Product> findByNameContaining(String name, Pageable pageable);
 }
