@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import com.demo.ecommerce.entity.State;
 import com.demo.ecommerce.service.StateService;
 
-
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/states")
 public class StateController {
