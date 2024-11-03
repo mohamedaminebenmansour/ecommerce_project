@@ -14,7 +14,7 @@ export class CheckoutFormService {
 
   constructor(private httpClient : HttpClient) { }
 
-  getAllCountries(): Observable<Country[]> {
+  getCountries(): Observable<Country[]> {
     return this.httpClient.get<Country[]>(this.countriesUrl);
   } 
 
