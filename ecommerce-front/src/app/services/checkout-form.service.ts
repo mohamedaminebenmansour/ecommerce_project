@@ -19,7 +19,7 @@ export class CheckoutFormService {
   } 
 
   getStates(theCountryCode: string): Observable<State[]> {
-    const searchStatesUrl = `${this.statesUrl}/findByCountryCode/${theCountryCode}`;
+    const searchStatesUrl = `${this.statesUrl}/country/${theCountryCode}`;
     return this.httpClient.get<State[]>(searchStatesUrl);
   }
   getCreditCardMonths(startMonth: number): Observable<number[]> {
