@@ -7,6 +7,7 @@ import {
 import { CheckoutFormService } from '../../services/checkout-form.service';
 import { Country } from '../../common/country';
 import { State } from '../../common/state';
+import { FormFieldValidators } from '../../validators/form-field-validators';
 
 @Component({
   selector: 'app-checkout',
@@ -79,8 +80,8 @@ export class CheckoutComponent implements OnInit {
 
   checkoutFormGroup = new FormGroup({
     customer: new FormGroup({
-      firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required),
+      firstName: new FormControl('', [Validators.required,Validators.minLength(2),FormFieldValidators.notOnlyWhitespace]),
+      lastName: new FormControl('', [Validators.required,Validators.minLength(2),FormFieldValidators.notOnlyWhitespace]),
       email: new FormControl('', [Validators.required, Validators.email])
     }),
     shippingAddress: new FormGroup({
