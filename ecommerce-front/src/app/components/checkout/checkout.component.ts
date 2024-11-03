@@ -85,24 +85,24 @@ export class CheckoutComponent implements OnInit {
       email: new FormControl('', [Validators.required, Validators.email])
     }),
     shippingAddress: new FormGroup({
-      street: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
+      street: new FormControl('', [Validators.required, Validators.minLength(2), FormFieldValidators.notOnlyWhitespace]),
+      city: new FormControl('', [Validators.required, Validators.minLength(2), FormFieldValidators.notOnlyWhitespace]),
       state: new FormControl('', Validators.required),
       country: new FormControl('', Validators.required),
-      zipCode: new FormControl('', Validators.required)
+      zipCode: new FormControl('', [Validators.required, Validators.minLength(2), FormFieldValidators.notOnlyWhitespace])
     }),
     billingAddress: new FormGroup({
-      street: new FormControl('', Validators.required),
-      city: new FormControl('', Validators.required),
+      street: new FormControl('', [Validators.required, Validators.minLength(2), FormFieldValidators.notOnlyWhitespace]),
+      city: new FormControl('', [Validators.required, Validators.minLength(2), FormFieldValidators.notOnlyWhitespace]),
       state: new FormControl('', Validators.required),
       country: new FormControl('', Validators.required),
-      zipCode: new FormControl('', Validators.required)
+      zipCode: new FormControl('', [Validators.required, Validators.minLength(2), FormFieldValidators.notOnlyWhitespace])
     }),
     creditCard: new FormGroup({
       cardType: new FormControl('', Validators.required),
-      nameOnCard: new FormControl('', Validators.required),
-      cardNumber: new FormControl('', [Validators.required, Validators.pattern(/^\d{16}$/)]),
-      securityCode: new FormControl('', [Validators.required, Validators.pattern(/^\d{3}$/)]),
+      nameOnCard: new FormControl('', [Validators.required, Validators.minLength(2), FormFieldValidators.notOnlyWhitespace]),
+      cardNumber: new FormControl('', [Validators.required, Validators.pattern('[0-9]{16}')]),
+      securityCode: new FormControl('', [Validators.required, Validators.pattern('[0-9]{3}')]),
       expirationMonth: new FormControl('', Validators.required),
       expirationYear: new FormControl('', Validators.required)
     })
