@@ -27,7 +27,6 @@ import java.util.Set;
 @Table(name="orders")
 @Getter
 @Setter
-@Data
 public class Order {
 
     @Id
