@@ -8,6 +8,7 @@ import { CheckoutFormService } from '../../services/checkout-form.service';
 import { Country } from '../../common/country';
 import { State } from '../../common/state';
 import { FormFieldValidators } from '../../validators/form-field-validators';
+import { CartService } from '../../services/cart.service';
 
 @Component({
   selector: 'app-checkout',
@@ -23,10 +24,14 @@ export class CheckoutComponent implements OnInit {
 
   shippingAddressStates: State[] = [];
   billingAddressStates: State[] = [];
+  totalPrice: number = 0;
+  totalQuantity: number = 0;
 
   constructor(
-    private checkoutFormService: CheckoutFormService) { }
+    private checkoutFormService: CheckoutFormService,
+    private cartService: CartService) { }
   ngOnInit(): void {
+    this.reviewCartDetails();
 
     const startMonth: number = new Date().getMonth() + 1;
     console.log("startMonth: " + startMonth);
@@ -55,6 +60,22 @@ export class CheckoutComponent implements OnInit {
     );
 
     
+
+    
+  }
+
+  reviewCartDetails() {
+
+    // subscribe to cartService.totalQuantity
+    this.cartService.totalQuantity.subscribe(
+      totalQuantity => this.totalQuantity = totalQuantity
+    );
+
+    // subscribe to cartService.totalPrice
+    this.cartService.totalPrice.subscribe(
+      totalPrice => this.totalPrice = totalPrice
+    );
+
   }
 
   get firstName() { return this.checkoutFormGroup.get('customer.firstName'); }
@@ -108,8 +129,7 @@ export class CheckoutComponent implements OnInit {
     })
   });
 
-  totalPrice: number = 0;
-  totalQuantity: number = 0;
+ 
 
   copyShippingAddressToBillingAddress(event: Event) {
     const target = event.target as HTMLInputElement;
