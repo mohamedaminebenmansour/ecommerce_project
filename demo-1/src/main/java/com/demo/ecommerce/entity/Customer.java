@@ -27,11 +27,7 @@ public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
-    private Long id;@Override
-    protected Object clone() throws CloneNotSupportedException {
-    	// TODO Auto-generated method stub
-    	return super.clone();
-    }
+    private Long id;
 
     @Column(name="first_name")
     private String firstName;
@@ -41,6 +37,9 @@ public class Customer {
 
     @Column(name="email")
     private String email;
+    
+    @Column(name = "role")
+    private String role;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Order> orders = new HashSet<>();
