@@ -40,6 +40,8 @@ public class Customer {
     
     @Column(name = "role")
     private String role;
+    
+    private String pwd;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Order> orders = new HashSet<>();
