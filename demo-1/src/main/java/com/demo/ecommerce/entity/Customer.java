@@ -4,9 +4,12 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -38,10 +41,17 @@ public class Customer {
     @Column(name="email")
     private String email;
     
-    @Column(name = "role")
-    private String role;
-    
+    @Column(name = "mobile_number")
+    private String mobileNumber;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String pwd;
+
+    private String role;
+
+    @Column(name = "create_dt")
+    @JsonIgnore
+    private Date createDt;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Order> orders = new HashSet<>();
