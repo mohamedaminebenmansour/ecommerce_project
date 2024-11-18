@@ -42,8 +42,9 @@ public class ProjectSecurityConfig {
             }
         })).csrf(csrfConfig -> csrfConfig.disable())
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards","/api/user").authenticated()
-                .requestMatchers("/api/products", "/contact", "/error", "/api/register").permitAll());
+                .requestMatchers("/myAccount","/api/user").authenticated()
+                .requestMatchers("/api/products/**", "/contact", "/error", "/api/register","/api/checkout"
+                		,"/api/countries","/api/product-categories/**","/api/states/**").permitAll());
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();
