@@ -21,6 +21,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import com.demo.ecommerce.exceptionhandling.CustomAccessDeniedHandler;
 import com.demo.ecommerce.exceptionhandling.CustomBasicAuthenticationEntryPoint;
 import com.demo.ecommerce.filter.AuthoritiesLoggingAfterFilter;
+import com.demo.ecommerce.filter.AuthoritiesLoggingAtFilter;
 import com.demo.ecommerce.filter.CsrfCookieFilter;
 import com.demo.ecommerce.filter.RequestValidationBeforeFilter;
 
@@ -55,6 +56,8 @@ public class ProjectSecurityConfig {
                 .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
                 .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
+                .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+                
                 .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())// Only HTTP
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/myAccount").hasRole("USER")
