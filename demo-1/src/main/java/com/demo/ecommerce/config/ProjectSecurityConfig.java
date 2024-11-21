@@ -23,6 +23,7 @@ import com.demo.ecommerce.exceptionhandling.CustomBasicAuthenticationEntryPoint;
 import com.demo.ecommerce.filter.AuthoritiesLoggingAfterFilter;
 import com.demo.ecommerce.filter.AuthoritiesLoggingAtFilter;
 import com.demo.ecommerce.filter.CsrfCookieFilter;
+import com.demo.ecommerce.filter.JWTTokenGeneratorFilter;
 import com.demo.ecommerce.filter.RequestValidationBeforeFilter;
 
 import java.util.Arrays;
@@ -59,6 +60,7 @@ public class ProjectSecurityConfig {
                 .addFilterBefore(new RequestValidationBeforeFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
+                .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
                 
                 .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())// Only HTTP
                 .authorizeHttpRequests((requests) -> requests
