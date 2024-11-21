@@ -2,9 +2,6 @@ package com.demo.ecommerce.config;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.Collections;
-
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -21,39 +18,55 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import com.demo.ecommerce.exceptionhandling.CustomAccessDeniedHandler;
+import com.demo.ecommerce.exceptionhandling.CustomBasicAuthenticationEntryPoint;
+import com.demo.ecommerce.filter.CsrfCookieFilter;
+
+import java.util.Collections;
+
 import static org.springframework.security.config.Customizer.withDefaults;
+
 @Configuration
+@Profile("!prod")
 public class ProjectSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
         http.securityContext(contextConfig -> contextConfig.requireExplicitSave(false))
-        .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
-        .cors(corsConfig -> corsConfig.configurationSource(new CorsConfigurationSource() {
-            @Override
-            public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
-                CorsConfiguration config = new CorsConfiguration();
-                config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
-                config.setAllowedMethods(Collections.singletonList("*"));
-                config.setAllowCredentials(true);
-                config.setAllowedHeaders(Collections.singletonList("*"));
-                config.setMaxAge(3600L);
-                return config;
-            }
-        })).csrf(csrfConfig -> csrfConfig.disable())
+                .sessionManagement(sessionConfig -> sessionConfig.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+                .cors(corsConfig -> corsConfig.configurationSource(new CorsConfigurationSource() {
+                    @Override
+                    public CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                        CorsConfiguration config = new CorsConfiguration();
+                        config.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                        config.setAllowedMethods(Collections.singletonList("*"));
+                        config.setAllowCredentials(true);
+                        config.setAllowedHeaders(Collections.singletonList("*"));
+                        config.setMaxAge(3600L);
+                        return config;
+                    }
+                }))
+                .csrf(csrfConfig -> csrfConfig.csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
+                        .ignoringRequestMatchers( "/contact","/register")
+                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class)
+                .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure()) // Only HTTP
                 .authorizeHttpRequests((requests) -> requests
+                        .requestMatchers("/myAccount", "/myBalance", "/myLoans", "/myCards", "/user").authenticated()
+                        .requestMatchers("/api/products/**", "/contact", "/error", "/api/register","/api/checkout"
+                        		,"/api/countries","/api/product-categories/**","/api/states/**", "/invalidSession").permitAll());
+        http.formLogin(withDefaults());
+        http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
+        http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
+        return http.build();
+        /*
+         * .authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/myAccount","/api/user").authenticated()
                 .requestMatchers("/api/products/**", "/contact", "/error", "/api/register","/api/checkout"
                 		,"/api/countries","/api/product-categories/**","/api/states/**").permitAll());
-        http.formLogin(withDefaults());
-        http.httpBasic(withDefaults());
-        return http.build();
+                		*/
     }
-
-    /*@Bean
-    public UserDetailsService userDetailsService(DataSource dataSource) {
-        return new JdbcUserDetailsManager(dataSource);
-    }*/
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,6 +75,7 @@ public class ProjectSecurityConfig {
 
     /**
      * From Spring Security 6.3 version
+     *
      * @return
      */
     @Bean
@@ -70,4 +84,3 @@ public class ProjectSecurityConfig {
     }
 
 }
-
