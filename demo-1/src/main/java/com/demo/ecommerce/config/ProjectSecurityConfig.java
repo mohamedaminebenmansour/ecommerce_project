@@ -24,6 +24,7 @@ import com.demo.ecommerce.filter.AuthoritiesLoggingAfterFilter;
 import com.demo.ecommerce.filter.AuthoritiesLoggingAtFilter;
 import com.demo.ecommerce.filter.CsrfCookieFilter;
 import com.demo.ecommerce.filter.JWTTokenGeneratorFilter;
+import com.demo.ecommerce.filter.JWTTokenValidatorFilter;
 import com.demo.ecommerce.filter.RequestValidationBeforeFilter;
 
 import java.util.Arrays;
@@ -61,6 +62,7 @@ public class ProjectSecurityConfig {
                 .addFilterAfter(new AuthoritiesLoggingAfterFilter(), BasicAuthenticationFilter.class)
                 .addFilterAt(new AuthoritiesLoggingAtFilter(), BasicAuthenticationFilter.class)
                 .addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class)
+                .addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class)
                 
                 .requiresChannel(rcc -> rcc.anyRequest().requiresInsecure())// Only HTTP
                 .authorizeHttpRequests((requests) -> requests
