@@ -25,6 +25,7 @@ import com.demo.ecommerce.filter.AuthoritiesLoggingAtFilter;
 import com.demo.ecommerce.filter.CsrfCookieFilter;
 import com.demo.ecommerce.filter.RequestValidationBeforeFilter;
 
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -46,6 +47,7 @@ public class ProjectSecurityConfig {
                         config.setAllowedMethods(Collections.singletonList("*"));
                         config.setAllowCredentials(true);
                         config.setAllowedHeaders(Collections.singletonList("*"));
+                        config.setExposedHeaders(Arrays.asList("Authorization"));
                         config.setMaxAge(3600L);
                         return config;
                     }
